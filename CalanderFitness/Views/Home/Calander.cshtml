@@ -1,0 +1,31 @@
+@{
+    ViewBag.Title = "Calander";
+}
+<main aria-labelledby="title">
+    <h2 id="title">@ViewBag.Title.</h2>
+    <h3>@ViewBag.Message</h3>
+    @*Beginning of calander*@
+    @{ 
+        DateTime currentDate = DateTime.Now;
+        int currentMonth = currentDate.Month;
+        int currentDay = currentDate.Day;
+        int currentYear = currentDate.Year;
+        string time = currentMonth + "/" + currentDay + "/" + currentYear;
+    }
+    <table border="1" cellspacing="10">
+        
+        <tr>
+            <th width="500px">Date</th>
+            </tr>
+        @*Loop through 7 for each day of the week to create new calander slots*@
+        @for (int i = 0; i < 7; i++) 
+        {
+        <tr>
+            <th width="500px">@time</th>
+        </tr>
+            currentDay += 1;
+            time = currentMonth + "/" + currentDay + "/" + currentYear;
+        }
+    </table>
+    <p>This the where the calander will go.</p>
+</main>
