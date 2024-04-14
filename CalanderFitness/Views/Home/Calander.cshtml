@@ -1,31 +1,70 @@
 @{
-    ViewBag.Title = "Calander";
+    ViewBag.Title = "Calendar";
 }
+
 <main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
+    <h2 id="title">@ViewBag.Title</h2>
     <h3>@ViewBag.Message</h3>
-    @*Beginning of calander*@
-    @{ 
+
+    @{
+        @*Here is where we get the information needed to make the calander, including getting the current day, month, and year*@
+        @*Using that information, we can dynamically make the calander*@
         DateTime currentDate = DateTime.Now;
         int currentMonth = currentDate.Month;
-        int currentDay = currentDate.Day;
         int currentYear = currentDate.Year;
-        string time = currentMonth + "/" + currentDay + "/" + currentYear;
+        int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+        DateTime firstDayOfMonth = new DateTime(currentYear, currentMonth, 1);
+        DayOfWeek firstDayOfWeek = firstDayOfMonth.DayOfWeek;
+        int daysInPreviousMonth = DateTime.DaysInMonth(currentYear, currentMonth - 1);
+        int currentDay = 1;
+        int previousMonthDaysToShow = (int)firstDayOfWeek;
     }
-    <table border="1" cellspacing="10">
-        
-        <tr>
-            <th width="500px">Date</th>
-            </tr>
-        @*Loop through 7 for each day of the week to create new calander slots*@
-        @for (int i = 0; i < 7; i++) 
-        {
-        <tr>
-            <th width="500px">@time</th>
+
+    <style> /* Using this bit of CSS code, we can set the borders for of the calander */
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px; /* Adjust padding as needed */
+        }
+    </style>
+
+    <table>
+        <tr> <!-- This is the header of the calander, where the days of the week will be displayed -->
+            <th width="500px">Sunday</th>
+            <th width="500px">Monday</th>
+            <th width="500px">Tuesday</th>
+            <th width="500px">Wednesday</th>
+            <th width="500px">Thursday</th>
+            <th width="500px">Friday</th>
+            <th width="500px">Saturday</th>
         </tr>
-            currentDay += 1;
-            time = currentMonth + "/" + currentDay + "/" + currentYear;
+
+        <tr>
+            @for (int i = 0; i < (int)firstDayOfWeek; i++) // This is where we display the days of the previous month in case we have to
+            {
+                <td>@(daysInPreviousMonth - previousMonthDaysToShow + i + 1)</td>
+            }
+            @for (int i = (int)firstDayOfWeek; i < 7; i++) // This is where we display the days of the current month in the calander, specifically the first week
+            {
+                <td>@currentDay</td>
+                currentDay++;
+            }
+        </tr>
+
+        @while (currentDay <= daysInMonth) // This is where we display the rest of the days of the current month in the calander by incrementing the current day and checking if it is less than or equal to the days in the month
+        {
+            <tr>
+                @for (int i = 0; i < 7 && currentDay <= daysInMonth; i++)
+                {
+                    <td>@currentDay</td>
+                    currentDay++;
+                }
+            </tr>
         }
     </table>
-    <p>This the where the calander will go.</p>
+
+    <p>Go Play Yakuza or Something.</p>
 </main>
